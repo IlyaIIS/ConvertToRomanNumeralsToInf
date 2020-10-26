@@ -7,9 +7,13 @@ namespace ConvertToRomanNumerals
     {
         static void Main(string[] args)
         {
-            string imput = Console.ReadLine();
+            string imput = "4400";//Console.ReadLine();
+
+            //for(int i = 1; i)
 
             Console.WriteLine(ConvertToRome(imput));
+
+            Console.WriteLine(ConvertFromRome(ConvertToRome(imput)));
         }
 
         static Char[] listDigits = { 'I', 'V', 'X', 'L', 'C', 'D', 'M', '-' };
@@ -35,37 +39,6 @@ namespace ConvertToRomanNumerals
             return output;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
         static Dictionary<char, int> dictDigits = new Dictionary<char, int>
           { { 'I', 1 },
             { 'V', 2 },
@@ -78,74 +51,91 @@ namespace ConvertToRomanNumerals
         
         static string ConvertFromRome(string str)
         {
-            string local = "";
+            string output = "";
+            int rank = 0;
 
-            for (int i = 0; i < str.Length; i++)
+            for (int i = str.Length - 1; i >= 0; i--)
             {
-                if (i != str.Length - 1)
+                if (i >= 3)
                 {
-                    if (dictDigits[str[i + 1]] - dictDigits[str[i]] == 1)
+                    if (dictDigits[str[i]] == dictDigits[str[i - 1]] && dictDigits[str[i]] == dictDigits[str[i - 2]] &&
+                        dictDigits[str[i]] - dictDigits[str[i - 3]] == -1)
                     {
-                        if (dictDigits[str[i]] % 2 == 1)
-                        local += '9';
-                        i++;
-                        continue;
-                    }
-
-                    if (dictDigits[str[i + 1]] - dictDigits[str[i]] == 1)
-                    {
-                        local += '4';
-                        i++;
-                        continue;
-                    }
-
-                    if (dictDigits[str[i + 1]] - dictDigits[str[i]] == 0)
-                    {
-                        local += '2';
-                        i++;
+                        output = output.Insert(0, "8");
+                        i -= 3;
+                        rank += 2;
                         continue;
                     }
                 }
 
-                if (i != str.Length - 2)
+                if (i >= 2)
                 {
-                    if (dictDigits[str[i + 1]] - dictDigits[str[i]] + dictDigits[str[i + 2]] == dictDigits[str[i + 2]])
+                    if (dictDigits[str[i]] == dictDigits[str[i - 1]] && dictDigits[str[i]] - dictDigits[str[i - 2]] == -1)
                     {
-                        local += '3';
-                        i += 2;
+                        output = output.Insert(0, "7");
+                        i -= 2;
+                        rank += 2;
                         continue;
                     }
-
-                    if (-dictDigits[str[i + 1]] - dictDigits[str[i + 2]] + dictDigits[str[i]] == dictDigits[str[i]])
+                    if (dictDigits[str[i]] == dictDigits[str[i - 1]] && dictDigits[str[i]] == dictDigits[str[i - 2]])
                     {
-                        local += '7';
-                        i += 2;
+                        output = output.Insert(0, "3");
+                        i -= 2;
+                        rank += 2;
+                        continue;
+                    }
+                }
+
+                if (i >= 1)
+                {
+                    if (dictDigits[str[i]] - dictDigits[str[i - 1]] == 2)
+                    {
+                        output = output.Insert(0, "9");
+                        i--;
+                        rank += 2;
                         continue;
                     }
 
                     if (dictDigits[str[i]] - dictDigits[str[i - 1]] == 1)
                     {
-                        local += '6';
-                        i += 2;
+                        output = output.Insert(0, "4");
+                        i--;
+                        rank += 2;
                         continue;
                     }
-                }
 
-                if (i != str.Length - 3)
-                {
-                    if (dictDigits[str[i + 1]] - dictDigits[str[i + 2]] - dictDigits[str[i + 3]] + dictDigits[str[i]] == 1)
+                    if (dictDigits[str[i]] - dictDigits[str[i - 1]] == -1)
                     {
-                        local += '8';
-                        i += 3;
+                        output = output.Insert(0, "6");
+                        i--;
+                        rank += 2;
+                        continue;
+                    }
+
+                    if (dictDigits[str[i]] == dictDigits[str[i - 1]])
+                    {
+                        output = output.Insert(0, "2");
+                        i--;
+                        rank += 2;
                         continue;
                     }
                 }
+                if (dictDigits[str[i]] - rank == 1)
+                    output = output.Insert(0, "1");
+                else
+                    output = output.Insert(0, "5");
 
-                local += '1';
-                
+                rank += 2;
             }
 
-            return local;
-        }*/
+            if ((dictDigits[str[str.Length - 1]] - 3) % 2 == 0)
+                for (int i = (dictDigits[str[str.Length - 1]] - 3) / 2; i > 0; i--)
+                    output += "0";
+            else
+                for (int i = (dictDigits[str[str.Length - 1]] - 2) / 2; i > 0; i--)
+                    output += "0";
+
+            return output;
+        }
     }
 }
