@@ -7,13 +7,14 @@ namespace ConvertToRomanNumerals
     {
         static void Main(string[] args)
         {
-            string imput = "4400";//Console.ReadLine();
+            Console.Write("Введите число: ");
+            string imput = Console.ReadLine();
 
-            //for(int i = 1; i)
+            Console.Write("Результат: ");
 
-            Console.WriteLine(ConvertToRome(imput));
+            if (Char.IsDigit(imput[0])) Console.WriteLine(ConvertToRome(imput));
 
-            Console.WriteLine(ConvertFromRome(ConvertToRome(imput)));
+            if (Char.IsLetter(imput[0])) Console.WriteLine(ConvertFromRome(imput));
         }
 
         static Char[] listDigits = { 'I', 'V', 'X', 'L', 'C', 'D', 'M', '-' };
@@ -120,7 +121,7 @@ namespace ConvertToRomanNumerals
                         continue;
                     }
                 }
-                if (dictDigits[str[i]] - rank == 1)
+                if (dictDigits[str[i]] - rank == 1 )
                     output = output.Insert(0, "1");
                 else
                     output = output.Insert(0, "5");
@@ -128,8 +129,8 @@ namespace ConvertToRomanNumerals
                 rank += 2;
             }
 
-            if ((dictDigits[str[str.Length - 1]] - 3) % 2 == 0)
-                for (int i = (dictDigits[str[str.Length - 1]] - 3) / 2; i > 0; i--)
+            if ((dictDigits[str[str.Length - 1]] - 1) % 2 == 0)
+                for (int i = (dictDigits[str[str.Length - 1]] - 1) / 2; i > 0; i--)
                     output += "0";
             else
                 for (int i = (dictDigits[str[str.Length - 1]] - 2) / 2; i > 0; i--)
